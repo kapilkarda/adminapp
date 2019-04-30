@@ -5,6 +5,9 @@ import Tab4Screen from '../screens/Main/instagram';
 import Tab5Screen from '../screens/Main/profile';
 import Tab3Screen from '../screens/Main/promotion';
 import NavTabBar from './TabBar/maintabbar';
+import Uploadimage from '../screens/Main/uploadimage';
+
+import {UPLOAD_IMAGE} from "../store/common/actionTypes";
 
 export const MainNavigator = createBottomTabNavigator(
     {
@@ -13,7 +16,8 @@ export const MainNavigator = createBottomTabNavigator(
       Tab3: { screen: Tab3Screen },
       Tab4: { screen: Tab4Screen },
       Tab5: { screen: Tab5Screen },
-      
+        Uploadimage: { screen: Uploadimage },
+
     },
     {
       initialRouteName: 'Tab1',

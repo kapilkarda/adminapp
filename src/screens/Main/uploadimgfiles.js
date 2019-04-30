@@ -1,37 +1,52 @@
 import React from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Image, FlatList,BackHandler } from 'react-native'
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import * as actions from "../../../store/common/actions";
+import * as actions from "../../store/common/actions";
 import { Actions } from 'react-native-router-flux';
 
-class Main extends React.Component {
+class Uploadimgfile extends React.Component {
 
   constructor(props) {
     super(props)
     this.state={
       username:'',
-      password:''
+      password:'',
+      check:'true'
     }
   }
+
   componentDidMount(){
-    console.log('componentWillUpdate2');
-    this.props.actions.getAll()
-  }
+    console.log('componentDidMount');
 
+    this.props.actions.UploadAll()
+  }
+  // componentWillUpdate() {
+  //   console.log('componentWillUpdate');
+  //  // this.props.actions.UploadAll()
+  // }
+  // componentDidUpdate() {
+  //   console.log('componentDidUpdate');
+  //   this.props.actions.UploadAll()
+
+  // }
   stamp(item){
-    this.props.actions.increaseCount(item.count + 1, item._id)
-    this.props.actions.getAll()
+
+    this.props.actions.deleteimage(item._id)
+    
+    this.props.actions.UploadAll()
+
 
   }
-//  componentWillUpdate() {
-//     console.log('componentWillUpdate');
-//     this.props.actions.getAll()
-//   }
+  // componentWillMount() {
+  //   console.log('BackHandler');
+  //   BackHandler.addEventListener()
+  // }
+
   chat(item){
-    Actions.chat({_id:item._id})
+    Actions.editimagename({_id:item._id})
     
   }
   uploadimagename(item){
@@ -44,24 +59,20 @@ class Main extends React.Component {
       <View style={styles.list2}>
            <Image
               style={{width:30,height:30, borderRadius:15, marginLeft:40}}
-              source={{uri:item.image ? item.image : 'https://twu.edu/media/images/cas/NoImage300sq.jpg'}}
+              source={{uri:item.url }}
            />
           <Text style={styles.lightbold}>{item.name}</Text>
-          <Text style={styles.light}>{item.count}</Text>
 
           <MaterialCommunityIcons name="circle-slice-8" size={14} color="green" style={[styles.lefticon, {marginTop:5}]} />
           <TouchableOpacity style={[styles.button, {position:'absolute', right:80}]} onPress={()=>this.stamp(item)}>
-             <Text style={{color:'#fff', fontSize:12, fontWeight:'600', paddingHorizontal:8, paddingVertical:4}}>STAMP ME</Text>
+             <Text style={{color:'#fff', fontSize:12, fontWeight:'600', paddingHorizontal:8, paddingVertical:4}}>DELETE</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, {position:'absolute', right:10}]} onPress={()=>this.chat(item)}>
-             <Text style={{color:'#fff', fontSize:12, fontWeight:'600', paddingHorizontal:8, paddingVertical:4}}>CHAT ME</Text>
-          </TouchableOpacity>
+         
          
       </View>
     );
 
   _renderImg = ({item}) => (
-    
     <View>
  <TouchableOpacity style={[styles.button, { alignItems:'center'}]} onPress={()=>this.uploadimagename(item)} >
           <Text style={{color:'#fff', fontSize:12, fontWeight:'600', paddingHorizontal:8, paddingVertical:4}}>Upload stars image and name</Text>
@@ -80,7 +91,7 @@ class Main extends React.Component {
           <View style={{width:'100%', padding:6, alignItems:'center', flex:1, marginTop:40}}>
                 <View style={{ width:'100%', flex:1}}>
                   <FlatList
-                    data={this.props.all} 
+                    data={this.props.allimage} 
                     keyExtractor={(item, i) => String(i)}
                     renderItem={this._renderItem}
                   />
@@ -88,13 +99,13 @@ class Main extends React.Component {
                 </View>
 
           </View>
-          <View style={{ width:'100%', flex:0.1,padding:6, alignItems:'center',height:'80%'}}>
+          {/* <View style={{ width:'100%', flex:0.1,padding:6, alignItems:'center',height:'80%'}}>
           <FlatList
                     data={[{title:'',key:'item1'}]} 
                     keyExtractor={(item, i) => String(i)}
                     renderItem={this._renderImg}
                   />  
-                  </View>        
+                  </View>         */}
       </View>
     )
   }
@@ -104,12 +115,12 @@ export default connect(
   state => ({
       me:state.common.me,
       count: state.common.count,
-      all:state.common.all
+      allimage:state.common.allimage
   }),
   dispatch => ({
       actions: bindActionCreators(actions, dispatch)
   })
-)(Main);
+)(Uploadimgfile);
 
 const styles = StyleSheet.create({
   container:{

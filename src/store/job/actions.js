@@ -6,6 +6,12 @@ export function setChat(chat){
     dispatch({type:types.SET_CHAT, chat});
   }
 }
+export function setUpload(upload){
+
+  return dispatch =>{
+    dispatch({type:types.SET_UPLODE, upload});
+  }
+}
 
 export function setOffer(offer){
 

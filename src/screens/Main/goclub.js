@@ -31,7 +31,7 @@ class Chat extends PureComponent {
 
   onRefresh(){
 
-    axios.get(`http://149.202.198.67:5000/api/members/` + this.props._id)
+    axios.get(`http://3.92.60.33:8083/api/members/` + this.props._id)
     .then(res => {
       const results = res.data.data.remarks;
       this.setState({ chatdata : results });

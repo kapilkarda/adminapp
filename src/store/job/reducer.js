@@ -2,6 +2,8 @@ import * as types from "./actionTypes";
 
 const initialState = {
   chat: [],
+  uploadimagename: [],
+
   offer: 0,
   situation:null,
 };
@@ -17,6 +19,16 @@ export default function job(state = initialState, action = {}) {
         ...state,
         type: types.SET_CHAT,
         chat: state.chat,
+        status: action.status
+      }
+    case types.SET_UPLODE:
+
+      state.uploadimagename.push(action.uploadimagename)
+
+      return {
+        ...state,
+        type: types.SET_UPLODE,
+        uploadimagename: state.uploadimagename,
         status: action.status
       }
 

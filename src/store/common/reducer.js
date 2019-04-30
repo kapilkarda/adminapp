@@ -4,7 +4,9 @@ const initialState = {
   me: {},
   count:0,
   all:[],
+  allimage:[],
   chat:[],
+  edit:[],
   image:null
 };
 
@@ -58,6 +60,13 @@ export default function common(state = initialState, action = {}) {
         all: action.data,
         status: action.status
     }
+    case types.GET_ALL_IMAGE:
+    return {
+      ...state,
+      type: types.GET_ALL_IMAGE,
+      allimage: action.data,
+      status: action.status
+  }
 
     case types.UPLOAD_IMAGE:
       return {

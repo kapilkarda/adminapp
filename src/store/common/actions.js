@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Actions } from 'react-native-router-flux';
 import _ from 'underscore'
 
-let BaseUrl = 'http://3.92.60.33:5000/api/'
+let BaseUrl = 'http://3.92.60.33:8083/api/'
 
 export function setUser(data){
   return dispatch =>{
@@ -58,6 +58,24 @@ export const editprofile = ( name, firstname, lastname, email, password, img, ph
 
         var data = response.data;
         console.log('data', data)
+        dispatch({ type: types.UPLODE_PROFILE, data: data });
+      })
+      .catch(function(error) {
+        console.log(error)
+        Toast.fail("Update Fail!");
+        dispatch({ type: types.FAILED });
+      });
+  };
+};
+export const uploadimg = ( name, img ) => {
+  var headers = { "Content-Type": "application/json" };
+  return dispatch => {
+    axios .put(BaseUrl + "members/update/member/" + _id, { name, img },  { headers: headers })
+      .then(function(response) {
+        Toast.success("Update Successed!");
+
+        var data = response.data;
+        console.log('data', data)
         dispatch({ type: types.EDIT_PROFILE, data: data });
       })
       .catch(function(error) {
@@ -75,7 +93,8 @@ export const increaseCount = ( count, _id ) => {
       .then(function(response) {
         Toast.success("Stamp Successed!");
 
-        var data = response.data.data.count;
+        var data = response.data.count;
+        console.log('count',data)
 
         dispatch({ type: types.STAMP, data: data });
       })
@@ -87,6 +106,45 @@ export const increaseCount = ( count, _id ) => {
   };
 };
 
+export const deleteimage = (  _id ) => {
+  var headers = { "Content-Type": "application/json" };
+  return dispatch => {
+    axios .delete(BaseUrl + "members/delete-images/" + _id,  { headers: headers })
+      .then(function(response) {
+        Toast.success("Delete Successed!");
+
+        var data = response.data;
+
+        dispatch({ type: types.STAMP, data: data });
+      })
+      .catch(function(error) {
+        console.log("error in image delete",error)
+        Toast.fail("Delete Fail!");
+        dispatch({ type: types.FAILED });
+      });
+  };
+};
+
+export const UploadAll = ( count, _id ) => {
+  var headers = { "Content-Type": "application/json" };
+  return dispatch => {
+    axios .get(BaseUrl + "members/fetch-images/", { headers: headers })
+      .then(function(response) {
+        var data = response.data;
+        console.log("fetch image data",data)
+       
+        // var mapping = _.filter(data, (u)=>{
+        //   return u.admin == 2 
+        // })
+
+        dispatch({ type: types.GET_ALL_IMAGE, data: data });
+      })
+      .catch(function(error) {
+        console.log(error)
+        dispatch({ type: types.FAILED });
+      });
+  };
+};
 export const getAll = ( count, _id ) => {
   var headers = { "Content-Type": "application/json" };
   return dispatch => {
@@ -123,10 +181,10 @@ export const sendChat = (content, _id) => {
   };
 };
 
-export const upload = (file,uri) => {
+export const upload = (name,uri) => {
 
   let formData = new FormData();
-  formData.append('file', {
+  formData.append('fileName', {
     uri,
     name: `photo.jpg`,
     type: `image/jpg`,
@@ -134,14 +192,20 @@ export const upload = (file,uri) => {
 
   var headers = {Accept: 'application/json',"Content-Type": "multipart/form-data" };
   return dispatch => {
-    axios .post(BaseUrl + "members/upload" , formData, { headers: headers })
+    axios .post(BaseUrl + "members/image-upload?name=" + name  , formData, { headers: headers })
       .then(function(response) {
         var data = response.data.image;
         console.log('image ok', data)
+        Toast.success("Upload Successed!");
+      //  Actions.pop('')
+        Actions.uploadimgfile()
         dispatch({ type: types.UPLOAD_IMAGE, data: data });
+       
       })
       .catch(function(error) {
         console.log(error)
+        Toast.success("Upload Fail!");
+
         dispatch({ type: types.FAILED });
       });
   };

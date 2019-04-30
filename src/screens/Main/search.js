@@ -29,7 +29,9 @@ class Search extends React.Component {
 export default connect(
   state => ({
       location:state.common.location,
-      chat:state.job.chat
+      chat:state.job.chat,
+    uploadimagename:state.job.uploadimagename
+
   }),
   dispatch => ({
     actions: bindActionCreators(actions, dispatch)

@@ -6,6 +6,9 @@ import Home from './screens/Main/MainSearch/main';
 import Test from './screens/test';
 import Signup from './screens/signup';
 import Chat from './screens/Main/goclub';
+import Uploadimagename from './screens/Main/uploadimage';
+import Uploadimgfile from './screens/Main/uploadimgfiles';
+import Editimagename from './screens/Main/editimage'
 
 export default class App extends PureComponent {
   state = {
@@ -44,6 +47,10 @@ export default class App extends PureComponent {
         <Scene key="test" component={Test} hideNavBar initial={true}/>
         <Scene key="signup" component={Signup} hideNavBar/>
         <Scene key="chat" component={Chat} hideNavBar/>
+        <Scene key="uploadimagename" component={Uploadimagename} hideNavBar/>
+        <Scene key="uploadimgfile" component={Uploadimgfile} hideNavBar/>
+        <Scene key="editimagename" component={Editimagename} hideNavBar/>
+
 
       </Scene>
     );
